@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  AtlasIQ Design Tokens
+  Dark mode is the default (primary) theme — matches the product's
+  "premium map at night" identity. Light mode is an opt-in override.
+*/
+@layer base {
+  :root {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+
+    --surface: 222 39% 8%;
+    --surface-elevated: 222 33% 11%;
+    --surface-overlay: 222 30% 14%;
+
+    --border: 217 24% 20%;
+    --border-strong: 217 24% 28%;
+    --input: 217 24% 18%;
+    --ring: 217 91% 60%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 210 40% 98%;
+    --primary-muted: 217 60% 18%;
+
+    --secondary: 222 30% 14%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 189 94% 55%;
+    --accent-foreground: 222 47% 8%;
+
+    --muted: 222 25% 13%;
+    --muted-foreground: 215 20% 65%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 92% 58%;
+    --warning-foreground: 26 40% 12%;
+
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 210 40% 98%;
+
+    --premium: 38 92% 58%;
+    --premium-foreground: 26 40% 12%;
+
+    --radius: 1rem;
+  }
+
+  /* Opt-in light theme (kept for Settings > Appearance, Stage 14) */
+  .light {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 8%;
+
+    --surface: 0 0% 100%;
+    --surface-elevated: 210 40% 99%;
+    --surface-overlay: 210 30% 96%;
+
+    --border: 214 32% 88%;
+    --border-strong: 214 32% 80%;
+    --input: 214 32% 88%;
+    --ring: 217 91% 55%;
+
+    --primary: 217 91% 55%;
+    --primary-foreground: 210 40% 98%;
+    --primary-muted: 217 91% 94%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --accent: 189 85% 40%;
+    --accent-foreground: 210 40% 98%;
+
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 16% 42%;
+
+    --success: 142 65% 38%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 85% 48%;
+    --warning-foreground: 26 40% 12%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --premium: 38 85% 48%;
+    --premium-foreground: 210 40% 98%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      "cv02",
+      "cv03",
+      "cv04",
+      "cv11";
+  }
+
+  ::selection {
+    @apply bg-primary/30 text-foreground;
+  }
+
+  /* Stage 16: touch-friendly by default — no 300ms tap delay or accidental double-tap zoom on interactive elements. */
+  button,
+  a,
+  [role="button"],
+  [role="switch"],
+  [role="tab"] {
+    touch-action: manipulation;
+  }
+
+  /* Visible keyboard focus everywhere — accessibility floor */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-surface-elevated/60 backdrop-blur-xl backdrop-saturate-150;
+  }
+
+  .glass-border {
+    @apply border border-border/60;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+  MapLibre GL ships light-themed controls/popups by default (Stage 6).
+  Restyle to match AtlasIQ's dark, glass aesthetic instead of overriding
+  per-instance — every map on the site should look the same.
+*/
+@layer components {
+  .maplibregl-ctrl-group {
+    @apply overflow-hidden rounded-lg border border-border bg-surface-elevated/90 shadow-card backdrop-blur-xl;
+  }
+
+  .maplibregl-ctrl-group button {
+    @apply bg-transparent;
+  }
+
+  .maplibregl-ctrl-group button:hover {
+    @apply bg-surface-overlay;
+  }
+
+  .maplibregl-ctrl-group button + button {
+    @apply border-t border-border;
+  }
+
+  .maplibregl-popup-content {
+    @apply rounded-lg border border-border bg-surface-elevated px-3 py-2 shadow-card;
+  }
+
+  .maplibregl-popup-tip {
+    border-top-color: hsl(var(--surface-elevated)) !important;
+    border-bottom-color: hsl(var(--surface-elevated)) !important;
+  }
+
+  .maplibregl-ctrl-attrib {
+    @apply rounded-md bg-surface-elevated/80 text-muted-foreground backdrop-blur;
+  }
+
+  .maplibregl-ctrl-attrib a {
+    @apply text-muted-foreground;
+  }
+}
