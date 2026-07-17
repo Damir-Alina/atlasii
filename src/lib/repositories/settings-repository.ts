@@ -53,7 +53,7 @@ export async function updateProfileSettings(
 
   const { error } = await supabase
     .from("profiles")
-    .update({ settings: next })
+    .update({ settings: next as any })
     .eq("id", userId);
 
   if (error) return null;
